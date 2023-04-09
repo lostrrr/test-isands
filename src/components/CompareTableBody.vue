@@ -67,6 +67,16 @@
 <script>
 export default {
   name: "CompareTableBody",
+  props: {
+    itemList: {
+      type: Array,
+      required: true,
+    },
+    totalItems: {
+      type: Number,
+      required: true,
+    },
+  },
 };
 </script>
 

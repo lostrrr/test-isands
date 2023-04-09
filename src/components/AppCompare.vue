@@ -7,11 +7,16 @@
           <div class="compare_title_showed-items">
             Отобразить товары:
             <span class="compare_title_links">
-              <a href="2">2</a>
-              <a class="underlined" href="3">3</a>
-              <a href="4">4</a>
-              <a href="5">5</a>
-              <a href="6">6</a>
+              <span
+                v-for="p in itemsPerPage"
+                :key="p"
+                @click="selectItemsPerPage(p)"
+                :class="{
+                  underlined: showedItems === p,
+                }"
+                class="compare_title_link"
+                >{{ p }}</span
+              >
             </span>
           </div>
         </div>
@@ -28,6 +33,23 @@ import CompareTableBody from "@/components/CompareTableBody.vue";
 export default {
   name: "AppCompare",
   components: { CompareTableBody, CompareTableHead },
+  props: {
+    itemList: {
+      type: Array,
+    },
+  },
+  data() {
+    return {
+      itemsPerPage: [2, 3, 4, 5, 6],
+      showDifferences: false,
+      showedItems: 3,
+    };
+  },
+  methods: {
+    selectItemsPerPage(items) {
+      this.showedItems = items;
+    },
+  },
 };
 </script>
 
@@ -40,15 +62,16 @@ export default {
   justify-content: space-between;
 }
 .compare_title_showed-items,
-.compare_title_links a {
+.compare_title_link {
   font-weight: 400;
   font-size: 18px;
   line-height: 60px;
   color: #0d5adc;
   letter-spacing: -0.02em;
 }
-.compare_title_links a {
+.compare_title_link {
   margin-left: 3px;
+  cursor: pointer;
 }
 .compare_title_header {
   font-weight: 700;
