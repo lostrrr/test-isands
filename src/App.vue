@@ -1,6 +1,6 @@
 <template>
-  <AppHeader :totalItems="totalItems" :itemList="itemList" />
-  <AppCompare :totalItems="totalItems" :itemList="itemList" />
+  <AppHeader />
+  <AppCompare />
 </template>
 
 <script>
@@ -12,16 +12,6 @@ export default {
   components: {
     AppHeader,
     AppCompare,
-  },
-  data() {
-    return {
-      itemList: [],
-    };
-  },
-  computed: {
-    totalItems() {
-      return this.itemList.length;
-    },
   },
 };
 </script>

@@ -1,42 +1,41 @@
 <template>
-  <div class="compare_items">
-    <div class="compare_show">
-      <div class="compare_show_wrapper">
-        <input type="checkbox" id="differences" name="differences" />
-        <label for="differences">Показать различия</label>
-      </div>
-    </div>
-    <div class="compare_item">
-      <div class="compare_item_card">
-        <div class="compare_item_card_img">
-          <img src="./../assets/iphone.svg" alt="phone" />
-          <a href="#" class="compare_item_card_icon">
-            <img src="./../assets/arrow_down.svg" alt="arrow_down" />
-          </a>
+  <div class="container">
+    <div class="compare_items">
+      <div class="compare_show">
+        <div class="compare_show_wrapper">
+          <input
+            :value="showDifferences"
+            @input="$emit('update:showDifferences', $event.target.checked)"
+            type="checkbox"
+            id="differences"
+            name="differences"
+          />
+          <label for="differences">Показать различия</label>
         </div>
-        <div>Apple iPhone 12</div>
       </div>
-    </div>
-    <div class="compare_item">
-      <div class="compare_item_card">
-        <div class="compare_item_card_img">
-          <img src="./../assets/xiaomi11.svg" alt="phone" />
-          <a href="#" class="compare_item_card_icon">
-            <img src="./../assets/arrow_down.svg" alt="arrow_down" />
-          </a>
+      <div
+        class="compare_item"
+        v-for="(item, index) in selectedItems"
+        :key="item"
+      >
+        <div class="compare_item_card">
+          <div class="compare_item_card_img">
+            <img :src="require(`../assets/${item.img}`)" alt="phone" />
+            <div class="compare_item_card_wrapper">
+              <template v-if="item === selectedItem">
+                <slot />
+              </template>
+              <span
+                v-if="this.restItems.length > 0"
+                class="compare_item_card_icon"
+                @click="$emit('select', item, index)"
+              >
+                <img src="./../assets/arrow_down.svg" alt="arrow_down" />
+              </span>
+            </div>
+          </div>
+          <div>{{ item.model }}</div>
         </div>
-        <div>Xiaomi Mi 11 Lite</div>
-      </div>
-    </div>
-    <div class="compare_item">
-      <div class="compare_item_card">
-        <div class="compare_item_card_img">
-          <img src="./../assets/samsunga72.svg" alt="phone" />
-          <a href="#" class="compare_item_card_icon">
-            <img src="./../assets/arrow_down.svg" alt="arrow_down" />
-          </a>
-        </div>
-        <div>Samsung Galaxy A72</div>
       </div>
     </div>
   </div>
@@ -45,9 +44,26 @@
 <script>
 export default {
   name: "CompareTableHead",
+  props: {
+    selectedItems: {
+      type: Array,
+      required: true,
+    },
+    restItems: {
+      type: Array,
+      required: true,
+    },
+    selectedItem: {
+      type: Object,
+      required: true,
+    },
+    showDifferences: {
+      type: [String, Boolean],
+    },
+  },
+  emits: ["update:showDifferences", "select", "showModal"],
 };
 </script>
-
 <style scoped>
 .compare_items {
   padding-top: 20px;
@@ -80,13 +96,15 @@ export default {
   font-size: 18px;
   line-height: 21px;
   color: #3b4157;
+  text-align: center;
 }
-.compare_item_card > img {
+.compare_item_card_img > img {
   height: 120px;
 }
 
 .compare_item_card_img {
   position: relative;
+  height: 120px;
 }
 
 .compare_item {
@@ -103,19 +121,9 @@ export default {
   justify-content: center;
   width: 30px;
   height: 27px;
+  cursor: pointer;
 }
-
-#differences {
+.compare_item_card_wrapper {
   position: relative;
-}
-#differences::before {
-  content: "";
-  z-index: -1;
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 24px;
-  height: 24px;
-  background: url(./../assets/Rectangle.svg);
 }
 </style>

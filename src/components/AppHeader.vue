@@ -44,7 +44,7 @@ export default {
 header {
   height: 101px;
   background: #ffffff;
-  border: 1px solid #a6a5a9;
+  border-bottom: 1px solid #a6a5a9;
 }
 .menu {
   display: flex;
