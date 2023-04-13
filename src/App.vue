@@ -3,17 +3,18 @@
   <AppCompare />
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import AppHeader from "./components/AppHeader.vue";
 import AppCompare from "./components/AppCompare.vue";
 
-export default {
+export default defineComponent({
   name: "App",
   components: {
     AppHeader,
     AppCompare,
   },
-};
+});
 </script>
 
 <style>
