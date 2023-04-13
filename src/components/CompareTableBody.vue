@@ -84,6 +84,7 @@ export default {
     },
     filteredCharacters: {
       type: Array,
+      required: true,
     },
   },
   methods: {
