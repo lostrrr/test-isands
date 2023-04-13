@@ -39,7 +39,7 @@
       <CompareTableBody
         :selectedItems="selectedItems"
         :rows="rows"
-        :filteredCharacters="differenceItems"
+        :filteredCharacters="filteredCharacters"
       />
     </div>
   </section>
@@ -54,113 +54,6 @@ export default {
   components: { CompareTableBody, CompareTableHead, AppModal },
   data() {
     return {
-      itemList: [
-        {
-          id: 1,
-          brand: "Apple",
-          model: "Apple iPhone 12",
-          year: 2020,
-          screenSize: 6.1,
-          country: "Китай",
-          memoryStorage: 128,
-          screenUpdateFrequency: 60,
-          nfc: false,
-          esim: true,
-          qiCharge: true,
-          price: 81990,
-          img: "iphone12.svg",
-        },
-        {
-          id: 2,
-          brand: "Xiaomi",
-          model: "Xiaomi Mi 11 Lite",
-          year: 2021,
-          screenSize: 6.55,
-          country: "Китай",
-          memoryStorage: 128,
-          screenUpdateFrequency: 90,
-          nfc: true,
-          esim: true,
-          qiCharge: false,
-          price: 27490,
-          img: "xiaomi11.svg",
-        },
-        {
-          id: 3,
-          brand: "Samsung",
-          model: "Samsung Galaxy A72",
-          year: 2021,
-          screenSize: 6.7,
-          country: "Вьетнам",
-          memoryStorage: 128,
-          screenUpdateFrequency: 90,
-          nfc: true,
-          esim: false,
-          qiCharge: true,
-          price: 32890,
-          img: "samsunga72.svg",
-        },
-        {
-          id: 4,
-          brand: "Apple",
-          model: "Apple iPhone Xr",
-          year: 2018,
-          screenSize: 6.4,
-          country: "Китай",
-          memoryStorage: 64,
-          screenUpdateFrequency: 60,
-          nfc: true,
-          esim: true,
-          qiCharge: true,
-          price: 22890,
-          img: "iphonexr.svg",
-        },
-        {
-          id: 5,
-          brand: "Samsung",
-          model: "Samsung Galaxy S21",
-          year: 2021,
-          screenSize: 6.7,
-          country: "Вьетнам",
-          memoryStorage: 128,
-          screenUpdateFrequency: 90,
-          nfc: true,
-          esim: false,
-          qiCharge: true,
-          price: 32890,
-          img: "samsunggalaxys21.svg",
-        },
-        {
-          id: 6,
-          brand: "Realme",
-          model: "Realme 8 Pro",
-          year: 2021,
-          screenSize: 6.3,
-          country: "Китай",
-          memoryStorage: 128,
-          screenUpdateFrequency: 90,
-          nfc: true,
-          esim: false,
-          qiCharge: true,
-          price: 12890,
-          img: "realme8pro.svg",
-        },
-        {
-          id: 7,
-          brand: "Iphone",
-          model: "Iphone X",
-          year: 2017,
-          screenSize: 6.3,
-          country: "Китай",
-          memoryStorage: 32,
-          screenUpdateFrequency: 60,
-          nfc: true,
-          esim: false,
-          qiCharge: true,
-          price: 15890,
-          img: "iphonex.png",
-        },
-      ],
       rows: [
         { prop: "brand", title: "Производитель" },
         { prop: "year", title: "год релиза" },
@@ -183,19 +76,7 @@ export default {
       changedItem: {},
       showModal: false,
       filter: "",
-      differenceItems: [],
-      differenceArray: [
-        "brand",
-        "year",
-        "screenSize",
-        "country",
-        "memoryStorage",
-        "screenUpdateFrequency",
-        "nfc",
-        "esim",
-        "qiCharge",
-        "price",
-      ],
+      filteredCharacters: [],
     };
   },
   methods: {
@@ -227,7 +108,7 @@ export default {
       }
       this.itemsPerPage = [...Array(length + 1).keys()].slice(2);
     },
-    makeDifferenceItems() {
+    makeFilteredCharacters() {
       const diffCharacteristicsList = [];
       for (const key in this.selectedItems[0]) {
         let identicalKeysValue = true;
@@ -238,27 +119,33 @@ export default {
         if (identicalKeysValue) continue;
         diffCharacteristicsList.push(key);
       }
-      this.differenceItems = diffCharacteristicsList;
+      this.filteredCharacters = diffCharacteristicsList;
     },
     toggleDifferences() {
       if (this.showDifferences === true) {
-        this.makeDifferenceItems();
+        this.makeFilteredCharacters();
       } else {
-        this.differenceItems = this.differenceArray;
+        this.filteredCharacters = this.differenceArray;
       }
     },
   },
   computed: {
+    itemList() {
+      return this.$store.state.itemList;
+    },
     filteredRestItems() {
       return this.restItems.filter((item) =>
         item.model.toLowerCase().includes(this.filter.toLowerCase())
       );
     },
+    differenceArray() {
+      return this.rows.map(({ prop }) => prop);
+    },
   },
   created() {
     this.groupItems();
     this.generateItemsPerPage();
-    this.differenceItems = this.selectedItems;
+    this.filteredCharacters = this.selectedItems;
   },
   watch: {
     itemList() {

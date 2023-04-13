@@ -58,7 +58,8 @@ export default {
       required: true,
     },
     showDifferences: {
-      type: [String, Boolean],
+      type: [Boolean],
+      required: true,
     },
   },
   emits: ["update:showDifferences", "select", "showModal"],

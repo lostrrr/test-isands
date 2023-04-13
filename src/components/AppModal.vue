@@ -1,5 +1,6 @@
 <template>
   <div class="modal">
+    <button class="modal_close" @click="$emit('close')">×</button>
     <div class="modal_wrapper">
       <input
         v-if="restItems.length > 3"
@@ -61,18 +62,24 @@ export default {
       type: String,
     },
   },
-  emits: ["update:filter", "change"],
+  emits: ["update:filter", "change", "close"],
 };
 </script>
 
 <style scoped>
-/* .modal_overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-} */
+.modal_close {
+  position: absolute;
+  top: -5rem;
+  right: -1.5rem;
+  font-size: 4rem;
+  width: 4rem;
+  height: 4rem;
+  line-height: 4rem;
+  text-align: center;
+  background: transparent;
+  color: #c1c1c1;
+  border: none;
+}
 .modal {
   position: absolute;
   z-index: 100;
